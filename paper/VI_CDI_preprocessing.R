@@ -62,7 +62,7 @@ write.csv(wordbank_dict, "./data/Norms/wordbank_dict_with_norms.csv")
 # read in and wrangle demographic info
 VI_demo <- read_csv("/Volumes/pn-opus/VIHI/SubjectInformation/Surveys/demographics/VI_qualtrics.csv") %>% 
   bind_rows((read_csv("/Volumes/pn-opus/VIHI/SubjectInformation/Surveys/demographics/VI_Herrera_demographics.csv"))) %>% 
-  dplyr::select(ParticipantNumber, Sex, Parent1Ed, VisionDiagnosisStandardized, SevereorProfound, ExcludefromVICDI) %>%
+  dplyr::select(ParticipantNumber, Sex, Parent1Ed, ChildRace, ChildEthnicity, VisionDiagnosisStandardized, SevereorProfound, ExcludefromVICDI) %>%
   mutate(ParticipantNumber = str_sub(ParticipantNumber, start=1, end=6)) %>%
   mutate(sex = case_when(Sex == "M" ~ "Male",
                          Sex == "F" ~ "Female",
@@ -264,7 +264,8 @@ VIHI_CDI <- rbind(WG_estimate_eng, WS_estimate_eng) %>%
   filter(group=="VI") %>%
   select(-c(Other_ID, Notes))
 write.csv(VIHI_CDI, "./data/CDI/Derived/VIHI_CDI.csv")
-
+write_rds(WG_estimate_eng_gcurve, "./data/CDI/Derived/WG_estimate_eng_gcurve.rds")
+write_rds(WS_estimate_eng_gcurve, "./data/CDI/Derived/WS_estimate_eng_gcurve.rds")
 
 # matching VI kids to wordbank kids based on vocab
 n_vi_kids <- VIHI_CDI %>%

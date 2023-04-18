@@ -4,27 +4,27 @@ shorttitle        : "Vocabulary Production of Blind Toddlers"
 
 
 author: 
-  - name          : "XXX"
+  - name          : "Erin Campbell"
     affiliation   : "1"
     corresponding : yes    
-    email         : "XXX"
-    address       : "XXX"
-  - name          : "XXX"
+    email         : "erin.e.campbell@duke.edu"
+    address       : "417 Chapel Drive, Durham, NC, 27708"
+  - name          : "Robyn Casillas"
     affiliation   : "2"
-  - name          : "XXX"
+  - name          : "Elika Bergelson"
     affiliation   : "1"
 
 affiliation:
   - id            : "1"
-    institution   : "XXX"
+    institution   : "Duke University"
   - id            : "2"
-    institution   : "XXX"
+    institution   : "Independent Researcher"
 
 note: | 
   **Conflicts of Interest**: The authors have no conflicts of interest to report.
-  **Funding**: This work was supported by the XXX to XXX and XXX to XXX. 
-  **Data Availability**: The data and code used to generate this paper on OSF [(link)](https://osf.io/uw6zm/?view_only=fdee466143f64d678d7f9d87b23ec566), which will be made publically accessible following acceptance of the manuscript.
-  **Ethics Approval**: This study received approval from XXX Institutional Review Board. 
+  **Funding**: This work was supported by the National Science Foundation CAREER grant (BCS-1844710) to EB and Graduate Research Fellowship (2019274952) to EC.
+  **Data Availability**: The data and code used to generate this paper on [OSF](https://osf.io/uw6zm/?view_only=fdee466143f64d678d7f9d87b23ec566), which will be made publically accessible following acceptance of the manuscript.
+  **Ethics Approval**: This study received approval from Duke University Institutional Review Board. 
 
 keywords          : "language development; blindness; vocabulary"
 wordcount         : "X"
@@ -37,7 +37,7 @@ floatsintext      : yes
 figurelist        : no
 tablelist         : no
 footnotelist      : no
-linenumbers       : yes
+linenumbers       : no
 mask              : no
 draft             : no
 
@@ -45,6 +45,7 @@ documentclass     : "apa6"
 classoption       : "man"
 output            : papaja::apa6_pdf
 latex_engine      : xelatex
+always_allow_html: true
 ---
 <!-- ec2eb: added data availability statement and ethics approval statement to title page for Developmental Science submission -->  
 ```{r setup, include=FALSE}
@@ -118,15 +119,16 @@ details <- function(column, round=2){
             )
 }
 ```
+# Research Highlights
+- Infants and toddlers born blind (with no other diagnoses) show a 7.5 month vocabulary delay on average, with wide variability.
+- Variability in vocabulary delay was partially explainable by etiology, but not severity or gender. Across the studied age range (7-57mo.), vocabulary delays widened with age.
+- Blind and sighted children's early vocabularies contain similar distributions of word lengths, parts of speech, semantic categories, and perceptual modalities.
+- Blind children (but not sighted children) were more likely to say visual words that could be experienced through other senses.
+
 # Abstract
 
 What is vision's role in driving early word production? To answer this, we assessed parent-report vocabulary questionnaires administered to congenitally blind children (N = 40, Mean age = 24mo.(R: 7-57mo.)) and compared the size and contents of their productive vocabulary to those of a large normative sample of sighted children (N=`r VIHI_CDI %>% distinct(Wordbank_n) %>% sum()`). We found that on average, blind children showed a roughly half-year vocabulary delay relative to sighted children, amid considerable variability. However, the content of blind and sighted children's vocabulary was statistically indistinguishable in word length, part of speech, semantic category, concreteness, interactiveness, and perceptual modality. At a finer-grained level, we also found that words' perceptual properties intersect with children's perceptual abilities. Our findings suggest that while an absence of visual input may initially make vocabulary development more difficult, the content of the early productive vocabulary is largely resilient to differences in perceptual access. 
 
-# Statement of Relevance
-
-Early word learning is often explained as children connecting words with what they see through object-referent co-occurrence and joint attention. And yet, congenitally blind individuals learn language without vision, suggesting that either vision is not necessary for word learning or that it proceeds differently for blind versus sighted individuals. Looking to the earliest stages of word production, we find evidence that young blind children are modestly delayed in word production but also have vocabularies that are highly similar to sighted toddlers' in sound, meaning, and grammar, and even in "visualness" (though blind children are more likely to produce multimodal words than sighted peers). Consistent with prior work, this suggests that language input itself is key to supporting early language learning. These results have important implications both for supporting blind individuals in particular and for our broader understanding of how sensory and linguistic signals are integrated in language development in all learners.
-
-<!-- 2000 words for intro, discussion, footnotes, acknowledgements, appendices, currently at 1974 on 12/21 -->
 
 # Introduction 
 
@@ -189,8 +191,8 @@ VIHI_CDI_single %>%
                                 Diagnosis=="Multiple" ~ " ",
                               Diagnosis == "Optic Nerve Hypoplasia" |
                               Diagnosis ==  "CVI"|
-                               Diagnosis ==  "Optic Pathway Glioma" ~ "Neural",
-                              TRUE ~ "Eye")) %>%
+                               Diagnosis ==  "Optic Pathway Glioma" ~ "Central",
+                              TRUE ~ "Peripheral")) %>%
     arrange(-(Nsevere+Nprofound+Nunsure))  %>%
 kableExtra::kable(caption = 'Severity of visual impairment and vision diagnoses for each child in the sample.', col.names = c("Diagnosis", "N severe", "N profound", "N severity unspecified","Etiology")) %>%
 kableExtra::kable_styling(latex_options="HOLD_position")
@@ -212,16 +214,14 @@ tribble(~ Variable, ~ `Range and Mean, or Ns`,
         glue('{receptiveCDIdetails$min}-{receptiveCDIdetails$max} words (mean (SD): {receptiveCDIdetails$mean} ({receptiveCDIdetails$sd}))'),
         "Productive Vocabulary (CDI)", 
         glue('{productiveCDIdetails$min}-{productiveCDIdetails$max} words (mean (SD): {productiveCDIdetails$mean} ({productiveCDIdetails$sd}))'),
-        'CDI Version', 
-        glue('Words and Gestures ({nrow(VIHI_CDI %>% filter(Version=="WG"))}); Words and Sentences ({nrow(VIHI_CDI %>% filter(Version=="WS"))})'),
         "Gender", 
-        glue('Female ({nrow(VIHI_CDI_single %>% filter(sex=="Female"))}); Male ({nrow(VIHI_CDI_single %>% filter(sex=="Male"))})'),
+        glue('Female (15); Male (25)'),
         "Maternal Education", 
-        glue('High School ({nrow(VIHI_CDI_single %>% filter(mom_ed=="Secondary"))}); Some College ({nrow(VIHI_CDI_single %>% filter(mom_ed=="Some College"))}); Bachelors degree ({nrow(VIHI_CDI_single  %>% filter(mom_ed=="College"))}); Graduate degree ({nrow(VIHI_CDI_single  %>% filter(mom_ed=="Graduate"))})'),
+        glue("High School (2); Associates Degree or Some College (11); Bachelors degree (18); Graduate degree (8), Missing (1)"),
                "Child Race", 
-        glue('American Indian or Alaska Native ({nrow(VIHI_CDI_single %>% filter(grepl(ChildRace,"American Indian or Alaska Native")))}); Asian ({nrow(VIHI_CDI_single %>% filter(grepl(ChildRace,"Asian")))}); Black or African American ({nrow(VIHI_CDI_single  %>% filter(grepl(ChildRace,"Black or African American")))}); Southeast Asian or Indian ({nrow(VIHI_CDI_single  %>% filter(grepl(ChildRace,"Southeast Asian or Indian")))}); White ({nrow(VIHI_CDI_single  %>% filter(grepl(ChildRace,"White")))}); Other ({nrow(VIHI_CDI_single  %>% filter(grepl(ChildRace,"Other")))}); Missing data ({nrow(VIHI_CDI_single  %>% filter(is.na(ChildRace)))})'),
+        glue('American Indian or Alaska Native (1); Black or African American (5); Southeast Asian or Indian (1); White (20); Multiracial or Other (2); Missing data (11)'),
                        "Child Ethnicity", 
-        glue('Hispanic or Latino ({nrow(VIHI_CDI_single %>% filter(ChildEthnicity=="Hispanic or Latino"))}); Missing data ({nrow(VIHI_CDI_single  %>% filter(is.na(ChildEthnicity)))})')
+        glue('Hispanic or Latino (4); Not Hispanic or Latino (23); Missing data (13)')
         )  %>% 
   kableExtra::kable(caption = glue('Demographic characteristics of the {nrow(VIHI_CDI %>% distinct(ParticipantNumber, .keep_all=TRUE))} participants in the study.')) %>%
   kableExtra::add_footnote("Receptive vocabulary scores only measured on Words and Gestures version of CDI; all Words and Sentences administrations excluded from these values.", notation="symbol",threeparttable = TRUE) %>%
@@ -237,15 +237,15 @@ Normative data for the CDI is available from English and many other languages on
 
 ## Analysis Plan
 
-Our results are organized around answering the two questions set out above: do blind and sighted children differ in how many words they say at a given age, and do they differ in the composition of those vocabularies. To address the first question we compared blind children's vocabulary on the CDI relative to norms derived from sighted children of the same age. We then considered a variety of child-level characteristics to get a better understanding of what may contribute to the overall delay we observe, as well as an analysis of delay size with age. For these analyses we used logistic regression curves, Wilcoxon Tests, and linear regression, as relevant. To address the second question, we matched for vocabulary size and compared blind and sighted children's vocabulary composition across a range of factors: word length, part of speech, semantic category, concreteness, interactiveness, and perceptual modality (details below). For these analyses we used Bonferroni-corrected Wilcoxon Tests and logistic regressions. Previewing the results to this question, we found very consistent vocabulary composition across our blind and sighted groups. We describe the findings in full detail below, and provide the data and code used to generate this paper on OSF [(link)](https://osf.io/uw6zm/?view_only=fdee466143f64d678d7f9d87b23ec566). These analyses were not preregistered.
+Our results are organized around answering the two questions set out above: do blind and sighted children differ in how many words they say at a given age, and do they differ in the composition of those vocabularies. To address the first question, we compared blind children's vocabulary on the CDI relative to norms derived from sighted children of the same age. We then considered a variety of child-level characteristics to get a better understanding of what may contribute to the overall delay we observe, as well as an analysis of delay size with age. For these analyses we used logistic regression curves, Wilcoxon Tests, and linear regression, as relevant. To address the second question, we matched for vocabulary size and compared blind and sighted children's vocabulary composition across a range of factors: word length, part of speech, semantic category, concreteness, interactiveness, and perceptual modality (details below). For these analyses we used Bonferroni-corrected Wilcoxon Tests and logistic regressions. Previewing the results to this question, we found very consistent vocabulary composition across our blind and sighted groups. We describe the findings in full detail below, and provide the data and code used to generate this paper on [OSF](https://osf.io/uw6zm/?view_only=fdee466143f64d678d7f9d87b23ec566). These analyses were not preregistered.
 
 ## Do blind children and sighted children show similar word production trajectories?
 
 To analyze whether blind children produce a similar *quantity* of words to their sighted peers, we used a large set of vocabulary production data from Wordbank. The normative dataset contains data from `r VIHI_CDI %>% distinct(Wordbank_n) %>% sum()` children learning American English (downloaded `r VIHI_CDI %>% distinct(Wordbank_norms_date)` from Wordbank [(link)](http://wordbank.stanford.edu/data?name=vocab_norms "Wordbank Vocabulary Norms")). As noted above, the two CDI forms differ in how many vocabulary items they contain. To take this into account, we established the difference (in months) between the child’s chronological age and their predicted age based on their productive vocabulary, derived from the WordBank norms [@frank2017], rather than using the raw number of words checked off on the instrument. We call this derived variable, measured in months, *vocabulary difference*.
 
 Following the procedure in Campbell & Bergelson (2022), to compute a child's predicted age from their vocabulary score, we used the Wordbank's 50th percentile for productive vocabulary for sighted infants [@frank2017] to create two binary logistic growth curves (for the WG and WS versions of the CDI). For each child, we took their productive vocabulary score, as reported on the CDI. We then divided the number of words produced by the number of possible words on the instrument (WG or WS), to give us the proportion of words produced. We used this proportion in an inverse prediction from the binary logistic regression curves to generate a predicted age. That is, for each possible CDI score, the growth curve provided the age that the score would be achieved for the 50th percentile trajectory. Finally, we subtracted the predicted age from each child's chronological age to calculate their vocabulary delay or advantage; see Figure \@ref(fig:growth-curve-illustration) for a visual representation of this procedure. However, for children producing 0 words (N=`r VIHI_CDI %>% filter(WordsProduced==0) %>% distinct(ParticipantNumber) %>% nrow()`), this approach is not appropriate due to the long tails on the growth curves. Thus, for this subset of children, we took the x-intercept from Wordbank (8 months), and subtracted that value from the child's chronological age to get their months difference. 
-<!-- ec2eb: adding plot to show the growth curves -->
-```{r growth-curve-illustration, fig.height=4, fig.width=6, fig.cap="Visual representation of the months-difference calculation. Teal line depicts the logistic growth curves constructed from the Wordbank 50th percentile data. Each point represents a blind child's productive vocabulary score from Words and Gestures (circles) or Words and Sentences (triangles); two of these points are enlarged for illustration. To calculate months-difference, we substract the child's chronological age from their expected age (based on vocabulary). In this visualization, months-difference is the x-distance between the point and the curve."}
+
+```{r growth-curve-illustration, fig.height=4, fig.width=6, fig.cap="Visual representation of the months-difference calculation. Shaded region shows the age range covered by the Wordbank norms. Teal line depicts the logistic growth curves constructed from the Wordbank 50th percentile data. Each point represents a blind child’s productive vocabulary score from Words and Gestures (circles) or Words and Sentences (triangles); two of these points are enlarged for illustration. To calculate months-difference, we substract the child’s chronological age from their expected age (based on vocabulary). In this visualization, months-difference is the x-axis distance between the point and the curve (negative values right of curve, positive are left)."}
 growth_curve_illustration
 ```
 
@@ -292,7 +292,7 @@ etiology_split_info <- VIHI_CDI_single %>%
 cowplot::plot_grid(gender_diff_plot, severity_diff_plot, etiology_diff_plot, ncol=1, labels = c("A", "B","C")) 
 ```
 
-To better understand the wide range of vocabulary outcomes, we next divided our blind sample along several child-level characteristics and compared the distribution of vocabulary differences via Wilcoxon tests; see Figure \@ref(fig:splitting-tests). Splitting the sample by gender (N~male~=`r gender_split_info$N[2]`, N~female~=`r gender_split_info$N[1]`), we do not observe significant gender differences (Mean~male~ delay = `r gender_split_info$MeanDelay[2]` months vs.  Mean~female~ delay = `r gender_split_info$MeanDelay[1]` months; W = `r round(gender_diffs$statistic, 3)`, *p* = `r printp(gender_diffs$p.value)`). We also did not observe differences based on severity of vision impairment within the severe-to-profound range of vision loss in our sample: children with severe vision impairment (some light perception; N~severe~=`r severity_split_info$N[2]`; Mean~severe~ delay = `r severity_split_info$MeanDelay[2]` months) had a similar size vocabulary delay to children with profound vision impairment (no light perception, N~profound~=`r severity_split_info$N[1]`; Mean~profound~ delay =`r severity_split_info$MeanDelay[1]` months; W = `r round(severity_diffs$statistic, 3)`, *p* = `r printp(severity_diffs$p.value)`). Lastly, we divided by etiology and found no significant difference (W = `r round(etiology_diffs$statistic, 3)`, *p* = `r printp(etiology_diffs$p.value)`): neural diagnoses (optic nerve hypoplasia or CVI; N~neural~=`r etiology_split_info$N[2]`; Mean~neural~ delay =`r etiology_split_info$MeanDelay[2]` months) vs. eye diagnoses (N~eye~=`r etiology_split_info$N[1]`; Mean~eye~ delay =`r etiology_split_info$MeanDelay[1]` months). We note that there was no particular selection for these dimensions within our eligibility criteria, and thus some of these comparisons are on unbalanced samples. 
+To better understand the wide range of vocabulary outcomes, we next divided our blind sample along several child-level characteristics and compared the distribution of vocabulary differences via Wilcoxon tests; see Figure \@ref(fig:splitting-tests). Splitting the sample by gender (N~male~=`r gender_split_info$N[2]`, N~female~=`r gender_split_info$N[1]`), we do not observe significant gender differences (Mean~male~ delay = `r gender_split_info$MeanDelay[2]` months vs.  Mean~female~ delay = `r gender_split_info$MeanDelay[1]` months; W = `r round(gender_diffs$statistic, 3)`, *p* = `r printp(gender_diffs$p.value)`). We also did not observe differences based on severity of vision impairment within the severe-to-profound range of vision loss in our sample: children with severe vision impairment (some light perception; N~severe~=`r severity_split_info$N[2]`; Mean~severe~ delay = `r severity_split_info$MeanDelay[2]` months) had a similar size vocabulary delay to children with profound vision impairment (no light perception, N~profound~=`r severity_split_info$N[1]`; Mean~profound~ delay =`r severity_split_info$MeanDelay[1]` months; W = `r round(severity_diffs$statistic, 3)`, *p* = `r printp(severity_diffs$p.value)`). Lastly, we divided by etiology and found no significant difference (W = `r round(etiology_diffs$statistic, 3)`, *p* = `r printp(etiology_diffs$p.value)`): central nervous system diagnoses (optic nerve hypoplasia or CVI; N~central~=`r etiology_split_info$N[2]`; Mean~central~ delay =`r etiology_split_info$MeanDelay[2]` months) vs. peripheral diagnoses (N~peripheral~=`r etiology_split_info$N[1]`; Mean~peripheral~ delay =`r etiology_split_info$MeanDelay[1]` months). We note that there was no particular selection for these dimensions within our eligibility criteria, and thus some of these comparisons are on unbalanced samples. 
 
 ### Does the delay lessen across age?
 
@@ -324,7 +324,6 @@ We then compared the words that blind and sighted children with equivalent vocab
 **Word length** was computed as number of syllables in each word. **Part of speech** (adjectives, adverbs, function words, interjections, nouns, onomatopoeia, and verbs) and **semantic category\footnote{Not all categories from Words and Sentences appear on Words and Gestures. Additionally, some of the "semantic categories" could also be considered parts of speech. The word-level breakdown of each of these categories can be found on our OSF page.}** (action words, animals, body parts, clothing, connecting words, descriptive words, food and drink, furniture and rooms, games and routines, helping verbs, household, locations, outside, people, places, pronouns, quantifiers, question words, sounds, time words, toys, and vehicles) subdivisions were taken from the categories on the CDI. For **concreteness**, we used the Brysbaert Concreteness ratings [@brysbaert2014], which asked sighted adult participants to rate words from 1 (Abstract - language based) to 5 (Concrete - experience based); `r wordbank_dict %>% distinct(Word, .keep_all=TRUE) %>% filter(is.na(Conc.M)) %>% nrow()` words were excluded from this analysis due to not having a concreteness rating. **Interactiveness** ratings were taken from the child-body-object interactiveness ratings from @muraki2022. These are 1-7 ratings by parents of school-aged children of how easily children can physically interact with each of the words. `r wordbank_dict %>% distinct(Word, .keep_all=TRUE) %>% filter(is.na(CBOI_Mean)) %>% nrow()` words were excluded from this analysis due to not having a rating. Lastly, **perceptual modality** was determined by the Lancaster Sensorimotor Norms [@lynott2020], taken from a large sample of sighted adults, who were asked to rate: "To what extent do you experience WORD by [hearing, smelling, tasting, seeing, etc.]?". Each word was rated 0-5 for each modality, and the modality which received the highest rating is used here for the perceptual modality of the word.
 
 To compare words across each of these dimensions, we used profile analyses and Wilcoxon tests, depending on the type of variable. For semantic category, perceptual modality, and part of speech, we compared counts of each word type across groups using profile analysis [@bulut2020]. For concreteness and word length, we ran Wilcoxon tests. Given that we conducted multiple comparisons (five total, one per dimension), the Bonferroni-corrected threshold for significance is `r printnum(.05/6, digits=4)`. 
-<!-- ec2eb: added a citation for profile analysis -->
 
 ```{r word-length}
 
@@ -363,8 +362,8 @@ None of the comparisons reached the *p*<`r .05/6` threshold for significance. Bl
 
 ## How do perceptual characteristics of words affect learnability?
 
-It was somewhat surprising to find such striking parallels in blind and sighted children's vocabulary, particularly the dominance of "visual" words, given that blind children lack visual access to the words' referents. That said, many of these words may be perceptible through other modalities. For example, while "playground" is classified as a visual word on the Lancaster Sensorimotor Norms, playgrounds can also be experienced through touch, sound, smell, or even taste. That is to suggest, although blind and sighted children's vocabularies contain a similar amount of visual words, perhaps the visual words that blind children produce are qualitatively different from the visual words that sighted children produce. To explore this possibility, we next compared blind and sighted children's likelihood of producing visual words (i.e., words whose highest perceptual ratings were visual) and non-visual words (i.e., words whose highest perceptual ratings were auditory, tactile, olfactory, interoceptive, or gustatory), based on the perceptual strength of each word and its perceptual exclusivity. To increase power for this more fine-grained analysis, we include all CDI administrations, rather than just the CDI from the oldest timepoint when multiple timepoints per child were available. Words that did not appear on a child's instrument (e.g., lawnmower does not appear on Words and Gestures) were excluded for those children.
-<!-- ec2eb: trying to make the "discrepancy" between results (similar amount of visual words, but less likely to produce words that are exclusively visual) more clear -->
+On one hand, it was somewhat surprising to find such striking parallels in blind and sighted children's vocabulary, particularly the dominance of "visual" words, given that blind children lack visual access to the words' referents. Notably, prior work e.g. Landau & Gleitman (1985) suggests their blind subject Kelli also produced highly visual words, though, word modality distributions over the vocabulary was not something they explored. More germanely, it’s worth noting that words the Lancaster Sensorimotor norms classify as visual are often perceptible through other modalities. For example, while “playground” is classified as a visual word on the Lancaster Sensorimotor Norms many of these words may be perceptible through other modalities. For example, while "playground" is classified as a visual word on these norms, playgrounds can also be experienced through touch, sound, smell, or even taste. This raises the possibility that although blind and sighted children's vocabularies contain similar amounts of visual words, the visual words that blind children produce may be qualitatively different from the visual words that sighted children produce. To explore this, we next compared blind and sighted children's likelihood of producing visual words (i.e., words whose highest perceptual ratings were visual) and non-visual words (i.e., words whose highest perceptual ratings were auditory, tactile, olfactory, interoceptive, or gustatory), based on the perceptual strength of each word and its perceptual exclusivity. To increase power for this more fine-grained analysis, we include all CDI administrations, rather than just the CDI from the oldest timepoint when multiple timepoints per child were available. Words that did not appear on a child's instrument (e.g., lawnmower does not appear on Words and Gestures) were excluded for those children.
+
 To do this, we constructed two logistic mixed effect models that predicted the log likelihood of a word being produced as a function of the three way interaction between the word's perceptual modality (visual or non-visual)\footnote{Given the large proportion of visual words and relative sparsity of other modalities in children's vocabulary, we grouped auditory, tactile, haptic, interoceptive, olfactory, and gustatory words into a "non-visual" category for the purpose of this analysis.}, group (blind or sighted), and either the word's perceptual strength (highest perceptual strength rating across all modalities, rated 1-5) or the word's perceptual exclusivity (expressed as a proportion from 0-1 calculated as the range of the ratings of all modalities divided by the sum of the ratings of all modalities. 0 = experienced equally in all modalities, 1 = experienced exclusively through a single modality); model formulae are below. Each model also included a random effect of child due to the multiple measures within some participants, as well as a random effect for word given that there is an observation for each word for each participant, and the likelihood of word-level variance being non-random (though not of interest for the present analysis). Thus, we fit two models as follows:  
 **Perceptual Strength Model:** $Word\ Production \sim Perceptual\ Strength * Perceptual\ Modality * Group + (1|Participant) + (1|Word)$  
 **Perceptual Exclusivity Model:** $Word\ Production \sim Perceptual\ Exclusivity * Perceptual\ Modality * Group + (1|Participant) + (1|Word)$  
@@ -384,7 +383,7 @@ modelsummary::msummary(list("Perceptual Strength * Modality * Group"=perceptuals
 
 ```
 
-For the perceptual exclusitivy model (Table \@ref(tab:excl-table)), we again found that the groups did not differ in overall likelihood of producing words ($\beta$ = `r exclusivity_model_summary$estimate[4]`, *p* `r printp(exclusivity_model_summary$p.value[4],add_equals = TRUE)`). The main effect of perceptual exclusivity was not significant ($\beta$ = `r exclusivity_model_summary$estimate[3]`, *p* `r printp(exclusivity_model_summary$p.value[3],add_equals = TRUE)`), and did not differ by group ($\beta$ = `r exclusivity_model_summary$estimate[7]`, *p* `r printp(exclusivity_model_summary$p.value[7],add_equals = TRUE)`). Here too, this pattern of main effects was qualified by a significant interaction between group and modality, such that blind children were significantly less likely to produce visual words ($\beta$ = `r exclusivity_model_summary$estimate[6]`, *p* `r printp(exclusivity_model_summary$p.value[6],add_equals = TRUE)`). Finally, we again observed a three-way interaction, here between modality, perceptual exclusivity, and group, such that for the sighted group, words that were more unimodal were more likely to be produced for both visual and non-visual words. By contrast, for the blind group, non-visual words that were more unimodal were more likely to be produced, but visual words that were more unimodal were *less* likely to be produced ($\beta$ = `r exclusivity_model_summary$estimate[8]`, *p* `r printp(exclusivity_model_summary$p.value[8],add_equals = TRUE)`).
+For the perceptual exclusivity model (Table \@ref(tab:excl-table)), we again found that the groups did not differ in overall likelihood of producing words ($\beta$ = `r exclusivity_model_summary$estimate[4]`, *p* `r printp(exclusivity_model_summary$p.value[4],add_equals = TRUE)`). The main effect of perceptual exclusivity was not significant ($\beta$ = `r exclusivity_model_summary$estimate[3]`, *p* `r printp(exclusivity_model_summary$p.value[3],add_equals = TRUE)`), and did not differ by group ($\beta$ = `r exclusivity_model_summary$estimate[7]`, *p* `r printp(exclusivity_model_summary$p.value[7],add_equals = TRUE)`). Here too, this pattern of main effects was qualified by a significant interaction between group and modality, such that blind children were significantly less likely to produce visual words ($\beta$ = `r exclusivity_model_summary$estimate[6]`, *p* `r printp(exclusivity_model_summary$p.value[6],add_equals = TRUE)`). Finally, we again observed a three-way interaction, here between modality, perceptual exclusivity, and group, such that for the sighted group, words that were more unimodal were more likely to be produced for both visual and non-visual words. By contrast, for the blind group, non-visual words that were more unimodal were more likely to be produced, but visual words that were more unimodal were *less* likely to be produced ($\beta$ = `r exclusivity_model_summary$estimate[8]`, *p* `r printp(exclusivity_model_summary$p.value[8],add_equals = TRUE)`).
 
 ```{r excl-table}
 
@@ -436,9 +435,9 @@ While we only included participants without diganosed cognitive or developmental
 While evidence from blind adults and older children suggests that language skills improve [@roder2003; @loiotile2020; @landau1985], we did not see evidence that vocabulary delays lessen in our age group. In fact, older children in our sample have larger delays. This could be a floor effect: the *possible* size of the delay increases over time, such that 12-month-olds cannot be 18 months delayed, but 30-month-olds can. That said, if blind children, after an initial delay, learn words at the same rate as the sighted peers  we would expect to see a constant delay; we saw an increasing one. This bumps the question downstream: if blind children eventually catch up to sighted peers, when and how does this happen?
 
 One possibility is that blind children initially struggle with word learning. The first words in blind children's vocabulary might be hard-earned. Vision might provide an easier or more efficient way for sighted children to connect referents to objects in their environment. Perhaps after blind children build their initial lexicon, they can leverage linguistic structure more effectively, through processes like syntactic bootstrapping [e.g., @babineau2021; @gleitman1990]. Evaluating this hypothesis awaits further work.
-<!-- ec2eb: adding gleitman1990 ref -->
-Turning to vocabulary *content*, blind and sighted children's lexicons were overwhelmingly similar: they were characterized by noun dominance, short, concrete, physically interactive words, and common topics [@frank2021]. Summarizing, blind children learn largely the same set of early words as sighted children. Perhaps surprisingly, the vocabularies of both sighted and blind children are dominated by "visual" words. However, the bulk of the words on the CDI [and indeed, the English language, @winter2018] are rated by sighted adults as primarily associated with visual experience.
-<!-- ec2eb: trying to make the "discrepancy" between results (similar amount of visual words, but less likely to produce words that are exclusively visual) more clear -->
+
+Turning to vocabulary *content*, blind and sighted children's lexicons were overwhelmingly similar: they were characterized by noun dominance, short, concrete, physically interactive words, and common topics [@frank2021]. Summarizing, blind children learn largely the same set of early words as sighted children. And while we found that the vocabularies of both sighted and blind children were dominated by “visual” words, the bulk of the words on the CDI [and indeed, the  English language, @winter2018] are rated by sighted adults as primarily associated with visual experience; in ongoing work, we are creating new norms from blind adults to further explore how these ratings may vary by sensory experience.
+
 That said, we found that learnability of visual words differed based on words' finer-grained perceptual properties. For blind children, higher perceptual exclusivity (less multimodality) predicted *lower* likelihood of production for visual words (but not non-visual words). For sighted children, perceptual exclusivity did not effect production of either word type. Relatedly, for blind children, higher perceptual strength ratings predicted greater likelihood of word production for non-visual words, but lacked this strong relationship for visual words. Constrastingly, in sighted children, higher perceptual strength predicted greater production likelihood of all words. These exploratory findings suggest that visual words like *light* (highly visual and unidimensional), are less likely to be produced by blind children relative to "visual" words that can be perceived through other modalities (e.g. *table*). 
 
 As a relatively large-scale study of language development in young blind children, these results are clinically relevant. Chiefly, blind children are at risk of language delays and may benefit from early intervention communication support. While initial delays may resolve [@brambring2007], providing young blind children and their caregivers with tools to communicate better may reduce children's frustration in toddlerhood [@manning2019].

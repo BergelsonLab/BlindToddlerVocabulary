@@ -26,22 +26,24 @@ growth_curve_illustration <- ggplot(data= VIHI_CDI %>% filter(group=="VI")) +
   theme(text=element_text(size=14), legend.position = "bottom") +
   xlab("Age (months)") +
   ylab("Words Produced") +
+  annotate('rect', xmin=8, xmax=30, ymin=0, ymax=700, alpha=.2, fill='#75ddba') +
   geom_line(data = WS_estimate_eng_gcurve%>%filter(predict_ages>18), aes(x=predict_ages, y=scores),colour='#75ddba', size=1.5)+
   geom_line(data = WG_estimate_eng_gcurve%>%filter(predict_ages<18), aes(x=predict_ages, y=scores),colour='#75ddba',size=1.5) +
+  geom_vline(xintercept =8, size =1.5) +
   geom_vline(xintercept =18, size =1.5) +
   geom_vline(xintercept =30, size =1.5) +
-  annotate(geom="text", x=12, y=600, label="WG", size=8)+
+  annotate(geom="text", x=13, y=600, label="WG", size=8)+
   annotate(geom="text", x=24, y=600, label="WS", size=8) +
   annotate(geom="text", x=48, y=600, label="outside range", size=8)+
   annotate("point", x = 17.2, y = 421, size=6, shape=17, color="#759fd3", fill="#759fd3")+
-  annotate("point", x = 41, y = 260, size=6, shape=17, color="#759fd3", fill="#759fd3")+
   geom_segment(aes(x = 18.1, y = 421, xend = 27.9, yend = 421),
                  arrow = arrow(length = unit(0.5, "cm")))+
-  geom_segment(aes(x = 40, y = 260, xend = 23.8, yend = 260),
+  geom_segment(aes(x = 41, y = 260, xend = 23.8, yend = 260),
                arrow = arrow(length = unit(0.5, "cm")))+
+  annotate("point", x = 41, y = 260, size=6, shape=17, color="#759fd3", fill="#759fd3")+
   annotate(geom="text", x=22.5, y=365, label="9 months\nahead", size=4) +
-  annotate(geom="text", x=35, y=305, label="9 months\nbehind", size=4)+
-  ylim(c(0, 680))
+  annotate(geom="text", x=35, y=310, label="17 months\nbehind", size=4)+
+  coord_cartesian(ylim=c(0, 680))
 
 # density plot
 density_plot <- ggplot(VIHI_CDI, aes(x = diff_age_from_expected)) + 
@@ -106,7 +108,7 @@ etiology_diff_plot <- ggplot(data=(VIHI_CDI %>% filter(group == "VI" & age_month
   geom_vline(xintercept = 0) +
   theme_vi_cdi(10, c(.8,.8)) +
   xlab("Difference from Sighted Sample (months)") +
-  scale_fill_manual(name="Etiology", values=c("#1A5E63", "#F0F3BD"), labels = c(glue('Eye-related\n(N={etiology_split_info$N[1]})'), glue('Optic Nerve / Neural (N={etiology_split_info$N[2]})')))
+  scale_fill_manual(name="Etiology", values=c("#1A5E63", "#F0F3BD"), labels = c(glue('Peripheral\n(N={etiology_split_info$N[1]})'), glue('Central Nervous System\n(N={etiology_split_info$N[2]})')))
 
 cowplot::plot_grid(gender_diff_plot, severity_diff_plot, etiology_diff_plot, ncol=1) 
 

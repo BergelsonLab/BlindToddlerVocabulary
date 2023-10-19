@@ -69,6 +69,7 @@ library(modelsummary)
 library(broom.mixed)
 library(ggrepel)
 library(ggExtra)
+library(modelsummary) # version 1.0.2
 
 if (pull_new_data == TRUE)
 {
@@ -372,16 +373,35 @@ To do this, we constructed two logistic mixed effect models that predicted the l
 For the perceptual strength model (Table \@ref(tab:ps-table)), we found a significant main effect of perceptual strength ($\beta$ = `r perceptualstrength_model_summary$estimate[3]`, *p* `r printp(perceptualstrength_model_summary$p.value[3],add_equals = TRUE)`). Overall, the groups did not differ in likelihood of producing words ($\beta$ = `r perceptualstrength_model_summary$estimate[4]`, *p* `r printp(perceptualstrength_model_summary$p.value[4],add_equals = TRUE)`), and the effect of perceptual strength did not differ by group ($\beta$ = `r perceptualstrength_model_summary$estimate[7]`, *p* `r printp(perceptualstrength_model_summary$p.value[7],add_equals = TRUE)`) or by modality ($\beta$ = `r perceptualstrength_model_summary$estimate[2]`, *p* `r printp(perceptualstrength_model_summary$p.value[2],add_equals = TRUE)`). This pattern of main effects was qualified by a significant interaction between group and modality, such that blind children were significantly less likely to produce visual words than non-visual words ($\beta$ = `r perceptualstrength_model_summary$estimate[6]`, *p* `r printp(perceptualstrength_model_summary$p.value[6],add_equals = TRUE)`). Finally, there was a significant three-way interaction between modality, perceptual strength, and group, such that for sighted children, there was a similar effect of perceptual strength for visual and non-visual words. For blind children however, the effect of perceptual strength was much stronger for non-visual words than visual words ($\beta$ = `r perceptualstrength_model_summary$estimate[8]`, *p* `r printp(perceptualstrength_model_summary$p.value[8],add_equals = TRUE)`). This suggests that for sighted children, stronger perceptual associations boosts the likelihood of word production across perceptual modalities; whereas for blind children, the effect of visual association strength was much weaker than the effect of perceptual association with *other* modalities (sound, touch, etc.). See Figure \@ref(fig:visualornot).
 
 ```{r ps-table, fig.pos='H'}
-modelsummary::msummary(list("Perceptual Strength * Modality * Group"=perceptualstrength_model), estimate= c("{estimate} [{conf.low}, {conf.high}]"), statistic = "{printp(p.value)}{stars}", stars = c('*' = .05, '**' = .01, '***' = .001),fmt=list("estimate"=2, conf.low=2, conf.high=2,"fmt"=NULL), shape = term ~ model + statistic, coef_rename = c('visualornotvisual' = 'Modality (visual)', 'Max_strength.perceptual' = 'Perceptual Strength','groupBlind'= 'Group (blind)', 'visualornotvisualMax_strength.perceptual' = 'Modality (visual) × Perceptual Strength','visualornotvisualgroupBlind'  = 'Modality (visual) × Group (blind)','Max_strength.perceptualgroupBlind'  = 'Perceptual Strength × Group (blind)','visualornotvisualMax_strength.perceptualgroupBlind' = 'Modality (visual) × Perceptual Strength × Group (blind)'), gof_map = NA, output="data.frame")  %>%
+modelsummary::msummary(
+  list("Perceptual Strength * Modality * Group" = perceptualstrength_model),
+  estimate = c("{estimate} [{conf.low}, {conf.high}]"),
+  statistic = "{(p.value)}{stars}",
+  stars = c('*' = .05, '**' = .01, '***' = .001),
+  shape = term ~ model + statistic,
+  fmt=fmt_statistic("estimate" = 2, conf.low=2, conf.high=2), 
+  coef_rename = c(
+    'visualornotvisual' = 'Modality (visual)',
+    'Max_strength.perceptual' = 'Perceptual Strength',
+    'groupBlind' = 'Group (blind)',
+    'visualornotvisualMax_strength.perceptual' = 'Modality (visual) × Perceptual Strength',
+    'visualornotvisualgroupBlind'  = 'Modality (visual) × Group (blind)',
+    'Max_strength.perceptualgroupBlind'  = 'Perceptual Strength × Group (blind)',
+    'visualornotvisualMax_strength.perceptualgroupBlind' = 'Modality (visual) × Perceptual Strength × Group (blind)'
+  ),
+  gof_map = NA,
+  output = "data.frame"
+)  %>%
   select(-1) %>%
-  slice(1:(n() - 2))%>%
-  kableExtra::kable(
-    col.names = c("Variable", "Beta [95% CI]",
-                  "p value"), caption = 'Logistic regression estimates for the perceptual exclusivity model (see formula in main text). Reference level for Modality is non-visual, and reference level for Group is sighted. Parentheticals indicate what is being compared to reference level.') %>%
-  kableExtra::kable_classic(full_width=FALSE) %>%
-  kableExtra::kable_styling(latex_options="HOLD_position")
+  slice(1:(n() - 2)) %>%
+  kableExtra::kable(col.names = c("Variable", "Beta [95% CI]",
+                                  "p value"),
+                    caption = 'Logistic regression estimates for the perceptual strength model (see formula in main text). Reference level for Modality is non-visual, and reference level for Group is sighted. Parentheticals indicate what is being compared to reference level.') %>%
+  kableExtra::kable_classic(full_width = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "HOLD_position")
 
-
+# 
+# 
 ```
 
 For the perceptual exclusivity model (Table \@ref(tab:excl-table)), we again found that the groups did not differ in overall likelihood of producing words ($\beta$ = `r exclusivity_model_summary$estimate[4]`, *p* `r printp(exclusivity_model_summary$p.value[4],add_equals = TRUE)`). The main effect of perceptual exclusivity was not significant ($\beta$ = `r exclusivity_model_summary$estimate[3]`, *p* `r printp(exclusivity_model_summary$p.value[3],add_equals = TRUE)`), and did not differ by group ($\beta$ = `r exclusivity_model_summary$estimate[7]`, *p* `r printp(exclusivity_model_summary$p.value[7],add_equals = TRUE)`). Here too, this pattern of main effects was qualified by a significant interaction between group and modality, such that blind children were significantly less likely to produce visual words ($\beta$ = `r exclusivity_model_summary$estimate[6]`, *p* `r printp(exclusivity_model_summary$p.value[6],add_equals = TRUE)`). Finally, we again observed a three-way interaction, here between modality, perceptual exclusivity, and group, such that for the sighted group, words that were more unimodal were more likely to be produced for both visual and non-visual words. By contrast, for the blind group, non-visual words that were more unimodal were more likely to be produced, but visual words that were more unimodal were *less* likely to be produced ($\beta$ = `r exclusivity_model_summary$estimate[8]`, *p* `r printp(exclusivity_model_summary$p.value[8],add_equals = TRUE)`). This interaction suggests that visual words only, for blind children only, words that could only be experienced through one domain (vision) were less likely to be produced, but this effect went in the opposite direction for other perceptual domains and for sighted children.
@@ -391,14 +411,9 @@ For the perceptual exclusivity model (Table \@ref(tab:excl-table)), we again fou
 modelsummary::msummary(
   list("Multimodalness * Modality * Group" = exclusivity_model),
   estimate = "{estimate} [{conf.low}, {conf.high}]",
-  statistic = "{printp(p.value)}{stars}",
+  statistic = "{p.value}{stars}",
   stars = c('*' = .05, '**' = .01, '***' = .001),
-  fmt = list(
-    "estimate" = 2,
-    conf.low = 2,
-    conf.high = 2,
-    "fmt" = NULL
-  ),
+  fmt=fmt_statistic("estimate" = 2, conf.low=2, conf.high=2),
   shape = term ~ model + statistic,
   coef_rename = c(
     'visualornotvisual' = 'Modality (visual)',

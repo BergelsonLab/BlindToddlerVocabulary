@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  19 OCT 2023 14:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  19 OCT 2023 16:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -821,22 +821,12 @@ LaTeX Warning: Float too large for page by 21.12518pt on input line 382.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [22]
-Overfull \hbox (8.62695pt too wide) in paragraph at lines 399--420
- [][] 
- []
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [23]
 Underfull \vbox (badness 3179) has occurred while \output is active []
 
-[24]
-Overfull \hbox (21.2566pt too wide) in paragraph at lines 428--449
- [][] 
- []
-
-[25] [26]
+[24] [25] [26]
 Underfull \vbox (badness 4752) has occurred while \output is active []
 
 [27] [28] [29]
@@ -865,10 +855,10 @@ Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 683.
 Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 683.
  ) 
 Here is how much of TeX's memory you used:
- 17100 strings out of 480608
- 257286 string characters out of 5903631
- 571428 words of memory out of 5000000
- 32389 multiletter control sequences out of 15000+600000
+ 17099 strings out of 480608
+ 257274 string characters out of 5903631
+ 571425 words of memory out of 5000000
+ 32388 multiletter control sequences out of 15000+600000
  619335 words of font info for 154 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  49i,12n,51p,1945b,479s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -884,7 +874,7 @@ mbx12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmmi12.pfb>
 t/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type
 1/public/lm/lmri12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/l
 m/lmsy10.pfb>
-Output written on VI_CDI_manuscript.pdf (36 pages, 608795 bytes).
+Output written on VI_CDI_manuscript.pdf (36 pages, 608361 bytes).
 PDF statistics:
  556 PDF objects out of 1000 (max. 8388607)
  484 compressed objects within 5 object streams

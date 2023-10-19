@@ -5,6 +5,8 @@ library(readxl)
 library(lazyeval)
 library(profileR)
 library(lme4)
+library(ggggeffects)
+
 
 # read in wordbank administrations
 WB_WG_admins <- get_instrument_data(language = "English (American)", form = "WG", administration_info =TRUE) %>% 

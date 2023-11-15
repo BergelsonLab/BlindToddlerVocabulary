@@ -273,31 +273,13 @@ write_rds(WS_estimate_eng_gcurve, "./data/CDI/Derived/WS_estimate_eng_gcurve.rds
 n_vi_kids <- VIHI_CDI %>%
   filter(group=='VI') %>%
   nrow
-VI_to_match <- VIHI_CDI %>%
-  filter(group == 'VI' & WordsProduced > 0) %>%
-  select(VIHI_ID, WordsProduced, Version)
 VI_to_match_single <- VIHI_CDI %>%
   filter(group == 'VI' & WordsProduced > 0) %>%
   arrange(-WordsProduced) %>%
   dplyr::distinct(ParticipantNumber, .keep_all=TRUE) %>%
   select(VIHI_ID, WordsProduced, Version) 
 
-VIvocabmatches <- VI_to_match %>%
-  mutate(VI_age= as.numeric(substring(VIHI_ID, 8))/30.4167) %>%
-  left_join(WB_admin_ages, by = c('WordsProduced', 'Version')) %>%
-  # In case of multiple (possibly m:n)  matches, we want the first VIHI kid to
-  # match the first databank kid, second - second, etc.
-  mutate(age_diff = VI_age-age) %>%
-  arrange(abs(age_diff)) %>%
-  group_by(VIHI_ID) %>%
-  mutate(WB_match_number = row_number()) %>%
-  ungroup %>%
-  group_by(data_id) %>%
-  mutate(VIHI_match_number = row_number()) %>%
-  ungroup() %>%
-  filter(WB_match_number == VIHI_match_number) %>%
-  filter(data_id != 'NA') %>%
-  mutate(TD_ID = paste(data_id, age, sep="_")) # i created this variable (here and in HIvocabmatches, below) to make sure I'm getting the right administration from the right kid
+
 
 VIvocabmatches_single <- VI_to_match_single %>%
   mutate(VI_age= as.numeric(substring(VIHI_ID, 8))/30.4167) %>%
@@ -316,6 +298,22 @@ VIvocabmatches_single <- VI_to_match_single %>%
   filter(data_id != 'NA') %>%
   mutate(TD_ID = paste(data_id, age, sep="_")) # i created this variable (here and in HIvocabmatches, below) to make sure I'm getting the right administration from the right kid
 
+VIvocabmatches_second <- VI_to_match_single %>%
+  mutate(VI_age= as.numeric(substring(VIHI_ID, 8))/30.4167) %>%
+  left_join(WB_admin_ages, by = c('WordsProduced', 'Version')) %>%
+  # In case of multiple (possibly m:n)  matches, we want the first VIHI kid to
+  # match the first databank kid, second - second, etc.
+  mutate(age_diff = VI_age-age) %>%
+  arrange(abs(age_diff)) %>%
+  group_by(VIHI_ID) %>%
+  mutate(WB_match_number = row_number()) %>%
+  ungroup %>%
+  group_by(data_id) %>%
+  mutate(VIHI_match_number = row_number()) %>%
+  ungroup() %>%
+  filter(WB_match_number == VIHI_match_number+1) %>%
+  filter(data_id != 'NA') %>%
+  mutate(TD_ID = paste(data_id, age, sep="_"))# i created this variable (here and in HIvocabmatches, below) to make sure I'm getting the right administration from the right kid
 
 
 # get word-level data for selected wordbank participants
@@ -325,10 +323,10 @@ WS_WB_wordlevel <- get_instrument_data("English (American)", "WS") %>%
   mutate(Version = "WS")
 WB_wordlevel <- bind_rows(WG_WB_wordlevel, WS_WB_wordlevel)
 # wordbank data for the VI vocab matches
-TD_VIvocab_matches_wordlevel <- WB_wordlevel %>%
+TD_VIvocab_matches_wordlevel_second <- WB_wordlevel %>%
   left_join(WB_admin_ages, by=c("data_id", "Version")) %>%
   mutate(TD_ID = paste(data_id, age, sep="_"), group = "TD") %>%
-  filter(TD_ID %in% VIvocabmatches$TD_ID) %>% #match with previously selected matches based on age and wordbank id (data_id)
+  filter(TD_ID %in% VIvocabmatches_second$TD_ID) %>% #match with previously selected matches based on age and wordbank id (data_id)
   left_join(wordbank_dict, by = c("item_id", "Version")) %>%
   dplyr::rename(VIHI_ID=TD_ID,
                 Response = value) %>% #merge VIHI_ID and data_id into one column
@@ -351,21 +349,20 @@ TD_VIvocab_matches_wordlevel_single <- WB_wordlevel %>%
                                         Response=="both"~"produces",
                                         Response=="yes"~"produces",
                                         TRUE ~ "no"))) %>%
+  filter(!is.na(item)) 
+TD_VIvocab_matches_wordlevel_second <- WB_wordlevel %>%
+  left_join(WB_admin_ages, by=c("data_id", "Version")) %>%
+  mutate(TD_ID = paste(data_id, age, sep="_"), group = "TD") %>%
+  filter(TD_ID %in% VIvocabmatches_second$TD_ID) %>% #match with previously selected matches based on age and wordbank id (data_id)
+  left_join(wordbank_dict, by = c("item_id", "Version")) %>%
+  dplyr::rename(VIHI_ID=TD_ID,
+                Response = value) %>% #merge VIHI_ID and data_id into one column
+  mutate(VIHI_ID = as.factor(VIHI_ID),
+         Response = as.factor(case_when(Response=="produces" ~ "produces", #standardize options for Response to either "no" or "Produces"
+                                        Response=="both"~"produces",
+                                        Response=="yes"~"produces",
+                                        TRUE ~ "no"))) %>%
   filter(!is.na(item))
-
-VITD_vocabmatches_wordlevel <- bind_rows(
-  (VI_wordlevel_CDI_long %>%
-     filter(VIHI_ID %in% VIvocabmatches$VIHI_ID)),
-  TD_VIvocab_matches_wordlevel) %>%
-  distinct(VIHI_ID, item, .keep_all = TRUE)  %>%
-  mutate(group = as.factor(case_when(group=="VI" ~ "Blind",
-                                     group=="TD" ~ "Sighted")))  %>%
-  mutate(group = relevel(group, "Sighted")) %>%
-  mutate(Response = as.factor(Response),
-         lexical_category = as.factor(lexical_category),
-         lexical_class = as.factor(lexical_class)) %>%
-  select(-c(data_id,produces,understands,WordsProduced))
-write.csv(VITD_vocabmatches_wordlevel,"./data/CDI/Derived/VITD_vocabmatches_wordlevel.csv")
 
 VITD_vocabmatches_wordlevel_single <- bind_rows(
   (VI_wordlevel_CDI_long %>%
@@ -380,19 +377,37 @@ VITD_vocabmatches_wordlevel_single <- bind_rows(
          lexical_class = as.factor(lexical_class),
          visualornot = as.factor(case_when(Dominant.perceptual=="Visual" ~ "visual",
                                            TRUE ~ "not_visual"))) %>%
-  select(-c(data_id,produces,understands,WordsProduced))
+  select(-c(data_id,produces,understands,WordsProduced))%>%
+  filter(VIHI_ID!="VI_043_476")
 write.csv(VITD_vocabmatches_wordlevel_single,"./data/CDI/Derived/VITD_vocabmatches_wordlevel_single.csv")
+
+VITD_vocabmatches_wordlevel_second <- bind_rows(
+  (VI_wordlevel_CDI_long %>%
+     filter(VIHI_ID %in% VIvocabmatches_second$VIHI_ID)),
+  TD_VIvocab_matches_wordlevel_second) %>%
+  distinct(VIHI_ID, item, .keep_all = TRUE)  %>%
+  mutate(group = as.factor(case_when(group=="VI" ~ "Blind",
+                                     group=="TD" ~ "Sighted")))  %>%
+  mutate(group = relevel(group, "Sighted")) %>%
+  mutate(Response = as.factor(Response),
+         lexical_category = as.factor(lexical_category),
+         lexical_class = as.factor(lexical_class)) %>%
+  select(-c(data_id,produces,understands,WordsProduced))%>%
+  filter(VIHI_ID!="VI_043_476")
+write.csv(VITD_vocabmatches_wordlevel_second,"./data/CDI/Derived/VITD_vocabmatches_wordlevel_second.csv")
+
+
 
 # america's next top models
 
-exclusivity_model <- glmer(Response ~ visualornot*Exclusivity.perceptual*group + (1|VIHI_ID) + (1|item), data = VITD_vocabmatches_wordlevel, family = "binomial",
+exclusivity_model <- glmer(Response ~ visualornot*Exclusivity.perceptual*group + (1|VIHI_ID) + (1|item), data = VITD_vocabmatches_wordlevel_single, family = "binomial",
                            glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 100000)))
 exclusivity_model_summary <- modelsummary::get_estimates(exclusivity_model)
 saveRDS(exclusivity_model, file = "./data/Models/exclusivity_model.rds")
 saveRDS(exclusivity_model_summary, file = "./data/Models/exclusivity_model_summary.rds")
 
 
-perceptualstrength_model <- glmer(Response ~ visualornot*Max_strength.perceptual*group + (1|VIHI_ID) + (1|item), data = VITD_vocabmatches_wordlevel, family = "binomial",
+perceptualstrength_model <- glmer(Response ~ visualornot*Max_strength.perceptual*group + (1|VIHI_ID) + (1|item), data = VITD_vocabmatches_wordlevel_single, family = "binomial",
                                   glmerControl(optimizer = "bobyqa", optCtrl = list(maxfun = 100000)))
 saveRDS(perceptualstrength_model, file = "./data/Models/perceptualstrength_model.rds")
 perceptualstrength_model_summary <- modelsummary::get_estimates(perceptualstrength_model)

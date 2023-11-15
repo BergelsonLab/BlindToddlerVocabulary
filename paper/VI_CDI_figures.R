@@ -1,3 +1,8 @@
+randomized_version_to_use <- if (version == "first") {
+  VITD_vocabmatches_wordlevel_single
+} else {
+  VITD_vocabmatches_wordlevel_second
+}
 
 
 # helper functions
@@ -154,7 +159,7 @@ agecomp_plot <- ggplot(vocabcomp_details, aes(x=group, y=age, color=group,fill=g
 # word length
 possible_wordlength_WG<- round(mean((wordbank_dict %>% filter(Version=="WG")%>%distinct(item, .keep_all = TRUE))$Syllables, na.rm=TRUE),2)
 possible_wordlength_WS<- round(mean((wordbank_dict %>% filter(Version=="WS")%>%distinct(item, .keep_all = TRUE))$Syllables, na.rm=TRUE),2)
-mean_length <- VITD_vocabmatches_wordlevel_single %>% group_by(group, VIHI_ID) %>%
+mean_length <- randomized_version_to_use %>% group_by(group, VIHI_ID) %>%
   filter(Response=="produces" | Response == "both") %>% dplyr::summarise(Syllables = mean(Syllables, na.rm=TRUE))
 length_summary <- mean_length %>% group_by(group) %>% summarise(Mean = round(mean(Syllables, na.rm=TRUE),2))
 word_length_plot <- ggplot(mean_length, aes(color=group, x=group, y=Syllables)) +
@@ -170,7 +175,7 @@ word_length_plot <- ggplot(mean_length, aes(color=group, x=group, y=Syllables)) 
 possible_pos_Ns <- wordbank_dict %>% group_by(lexical_class) %>% 
   summarise(N_WG = sum(Version=="WG"),
             N_WS = sum(Version=="WS"))
-VITD_pos_Ns <- VITD_vocabmatches_wordlevel_single %>% 
+VITD_pos_Ns <- randomized_version_to_use %>% 
   filter(Response=="produces" | Response == "both") %>%
   group_by(group, VIHI_ID, lexical_class) %>%
   summarise(N=n()) %>%
@@ -194,7 +199,7 @@ possible_category_Ns <- wordbank_dict %>%
   group_by(category) %>% 
   summarise(N_WG = sum(Version=="WG"),
             N_WS = sum(Version=="WS"))
-VITD_category_Ns <- VITD_vocabmatches_wordlevel_single %>% 
+VITD_category_Ns <- randomized_version_to_use%>% 
   filter(Response=="produces" | Response == "both") %>%
   group_by(group, VIHI_ID, category) %>%
   summarise(N=n()) %>%
@@ -220,9 +225,9 @@ possible_concreteness_WG<- round(mean((wordbank_dict %>% filter(Version=="WG") %
 possible_concreteness_WS<- round(mean((wordbank_dict %>% filter(Version=="WS") %>%distinct(item, .keep_all = TRUE))$Conc.M, na.rm=TRUE),2)
 
 
-mean_concreteness <- VITD_vocabmatches_wordlevel_single %>% group_by(group, VIHI_ID) %>%
+mean_concreteness <- randomized_version_to_use %>% group_by(group, VIHI_ID) %>%
   filter(Response=="produces" | Response == "both") %>% dplyr::summarise(Conc.M = mean(Conc.M, na.rm=TRUE))
-test_mean_concreteness <- wilcox.test(mean_concreteness$Conc.M ~ mean_concreteness$group)
+test_mean_concreteness <- wilcox.test(mean_concreteness$Conc.M ~ mean_concreteness$group, paired=TRUE)
 Z_meanconcrete<-round(qnorm(test_mean_concreteness$p.value/2),2)
 concrete_summary <- mean_concreteness %>% group_by(group) %>% summarise(Mean = round(mean(Conc.M, na.rm=TRUE),2))
 
@@ -236,7 +241,7 @@ concreteness_plot<- ggplot(mean_concreteness, aes(color=group, x=group, y=Conc.M
   ylim(c(3,5)) 
 
 # Child-Body-Object Interaction
-mean_CBOI <- VITD_vocabmatches_wordlevel_single %>% group_by(group, VIHI_ID) %>%
+mean_CBOI <- randomized_version_to_use %>% group_by(group, VIHI_ID) %>%
   filter(Response=="produces" | Response == "both") %>% dplyr::summarise(CBOI = mean(CBOI_Mean, na.rm=TRUE))
 test_mean_CBOI <- wilcox.test(mean_CBOI$CBOI ~ mean_CBOI$group)
 Z_mean_CBOI<-round(qnorm(test_mean_CBOI$p.value/2),2)
@@ -252,7 +257,7 @@ CBOI_plot<- ggplot(mean_CBOI, aes(color=group, x=group, y=CBOI)) +
   ylim(c(4,7))
 
 # modality
-VITD_modality_Ns <- VITD_vocabmatches_wordlevel_single %>% 
+VITD_modality_Ns <- randomized_version_to_use %>% 
   filter(Response=="produces" | Response == "both") %>%
   filter(!is.na(Dominant.perceptual)) %>%
   group_by(group, VIHI_ID, Dominant.perceptual) %>%

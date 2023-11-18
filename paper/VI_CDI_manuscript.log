@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  16 NOV 2023 12:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.4.7)  18 NOV 2023 05:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -774,8 +774,9 @@ Package pdftex.def Info: VI_CDI_manuscript_files/figure-latex/splitting-tests-1
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[13]
-<VI_CDI_manuscript_files/figure-latex/longitudinal-plot-1.pdf, id=120, 459.7175
+[13] [14 <./VI_CDI_manuscript_files/figure-latex/density-plot-1.pdf>] [15 <./VI
+_CDI_manuscript_files/figure-latex/splitting-tests-1.pdf>]
+<VI_CDI_manuscript_files/figure-latex/longitudinal-plot-1.pdf, id=152, 459.7175
 pt x 315.1775pt>
 File: VI_CDI_manuscript_files/figure-latex/longitudinal-plot-1.pdf Graphic file
  (type pdf)
@@ -783,10 +784,8 @@ File: VI_CDI_manuscript_files/figure-latex/longitudinal-plot-1.pdf Graphic file
 Package pdftex.def Info: VI_CDI_manuscript_files/figure-latex/longitudinal-plot
 -1.pdf  used on input line 349.
 (pdftex.def)             Requested size: 459.74442pt x 315.19595pt.
-[14 <./VI_CDI_manuscript_files/figure-latex/density-plot-1.pdf>] [15 <./VI_CDI_
-manuscript_files/figure-latex/splitting-tests-1.pdf>] [16 <./VI_CDI_manuscript_
-files/figure-latex/longitudinal-plot-1.pdf>]
-<VI_CDI_manuscript_files/figure-latex/vocab-match-demo-1.pdf, id=172, 459.7175p
+[16 <./VI_CDI_manuscript_files/figure-latex/longitudinal-plot-1.pdf>]
+<VI_CDI_manuscript_files/figure-latex/vocab-match-demo-1.pdf, id=173, 459.7175p
 t x 315.1775pt>
 File: VI_CDI_manuscript_files/figure-latex/vocab-match-demo-1.pdf Graphic file 
 (type pdf)
@@ -794,8 +793,11 @@ File: VI_CDI_manuscript_files/figure-latex/vocab-match-demo-1.pdf Graphic file
 Package pdftex.def Info: VI_CDI_manuscript_files/figure-latex/vocab-match-demo-
 1.pdf  used on input line 360.
 (pdftex.def)             Requested size: 459.74442pt x 315.19595pt.
-[17 <./VI_CDI_manuscript_files/figure-latex/vocab-match-demo-1.pdf>] [18]
-<VI_CDI_manuscript_files/figure-latex/vocab-comparison-1.pdf, id=195, 646.415pt
+[17]
+Underfull \vbox (badness 1817) has occurred while \output is active []
+
+[18 <./VI_CDI_manuscript_files/figure-latex/vocab-match-demo-1.pdf>]
+<VI_CDI_manuscript_files/figure-latex/vocab-comparison-1.pdf, id=197, 646.415pt
  x 497.86pt>
 File: VI_CDI_manuscript_files/figure-latex/vocab-comparison-1.pdf Graphic file 
 (type pdf)
@@ -803,11 +805,7 @@ File: VI_CDI_manuscript_files/figure-latex/vocab-comparison-1.pdf Graphic file
 Package pdftex.def Info: VI_CDI_manuscript_files/figure-latex/vocab-comparison-
 1.pdf  used on input line 372.
 (pdftex.def)             Requested size: 469.75838pt x 361.80148pt.
-
-Underfull \vbox (badness 1400) has occurred while \output is active []
-
-[19 <./VI_CDI_manuscript_files/figure-latex/vocab-comparison-1.pdf>]
-<VI_CDI_manuscript_files/figure-latex/visualornot-1.pdf, id=212, 432.61626pt x 
+<VI_CDI_manuscript_files/figure-latex/visualornot-1.pdf, id=199, 432.61626pt x 
 421.575pt>
 File: VI_CDI_manuscript_files/figure-latex/visualornot-1.pdf Graphic file (type
  pdf)
@@ -818,7 +816,8 @@ Package pdftex.def Info: VI_CDI_manuscript_files/figure-latex/visualornot-1.pdf
 
 LaTeX Warning: Float too large for page by 21.12518pt on input line 382.
 
-[20] [21 <./VI_CDI_manuscript_files/figure-latex/visualornot-1.pdf>] [22]
+[19] [20 <./VI_CDI_manuscript_files/figure-latex/vocab-comparison-1.pdf>] [21 <
+./VI_CDI_manuscript_files/figure-latex/visualornot-1.pdf>] [22]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [23]
@@ -858,11 +857,11 @@ Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 689.
 Here is how much of TeX's memory you used:
  17102 strings out of 480608
  257316 string characters out of 5903631
- 570454 words of memory out of 5000000
+ 573163 words of memory out of 5000000
  32388 multiletter control sequences out of 15000+600000
  619281 words of font info for 154 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 49i,12n,51p,1945b,479s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 49i,12n,51p,2091b,479s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/
 texlive/2020/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/20
 20/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2020/texmf-d
@@ -875,7 +874,7 @@ mbx12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/lm/lmmi12.pfb>
 t/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2020/texmf-dist/fonts/type
 1/public/lm/lmri12.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/public/l
 m/lmsy10.pfb>
-Output written on VI_CDI_manuscript.pdf (36 pages, 616453 bytes).
+Output written on VI_CDI_manuscript.pdf (36 pages, 616609 bytes).
 PDF statistics:
  562 PDF objects out of 1000 (max. 8388607)
  490 compressed objects within 5 object streams

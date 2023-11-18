@@ -5,19 +5,16 @@
 \documentclass[
   man,floatsintext]{apa6}
 \usepackage{amsmath,amssymb}
+\usepackage{lmodern}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
+  \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
-\usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -109,9 +106,9 @@
 
 % Create new environments so endfloat can handle them
 % \newenvironment{ltable}
-%   {\begin{landscape}\centering\begin{threeparttable}}
-%   {\end{threeparttable}\end{landscape}}
-\newenvironment{lltable}{\begin{landscape}\centering\begin{ThreePartTable}}{\end{ThreePartTable}\end{landscape}}
+%   {\begin{landscape}\begin{center}\begin{threeparttable}}
+%   {\end{threeparttable}\end{center}\end{landscape}}
+\newenvironment{lltable}{\begin{landscape}\begin{center}\begin{ThreePartTable}}{\end{ThreePartTable}\end{center}\end{landscape}}
 
 % Enables adjusting longtable caption width to table width
 % Solution found at http://golatex.de/longtable-mit-caption-so-breit-wie-die-tabelle-t15767.html
@@ -124,20 +121,6 @@
 % \setlength{\parindent}{0.5in}
 % \setlength{\parskip}{0pt plus 0pt minus 0pt}
 
-% Overwrite redefinition of paragraph and subparagraph by the default LaTeX template
-% See https://github.com/crsh/papaja/issues/292
-\makeatletter
-\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
-  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
-  {-1em}%
-  {\normalfont\normalsize\bfseries\itshape\typesectitle}}
-
-\renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
-  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
-  {-\z@\relax}%
-  {\normalfont\normalsize\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
-\makeatother
-
 % \usepackage{etoolbox}
 \makeatletter
 \patchcmd{\HyOrg@maketitle}
@@ -149,15 +132,7 @@
   {\section*{\protect\normalfont{\@title}}}
   {}{\typeout{Failed to patch title.}}
 \makeatother
-
-\usepackage{xpatch}
-\makeatletter
-\xapptocmd\appendix
-  {\xapptocmd\section
-    {\addcontentsline{toc}{section}{\appendixname\ifoneappendix\else~\theappendix\fi\\: #1}}
-    {}{\InnerPatchFailed}%
-  }
-{}{\PatchFailed}
+\shorttitle{Vocabulary Production of Blind Toddlers}
 \keywords{language development; blindness; vocabulary\newline\indent Word count: X}
 \usepackage{csquotes}
 \ifLuaTeX
@@ -165,7 +140,7 @@
 \fi
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
+\urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={The Role of Vision in the Acquisition of Words: Vocabulary Development in Blind Toddlers},
   pdfauthor={Erin Campbell1, Robyn Casillas2, \& Elika Bergelson1},
@@ -179,16 +154,6 @@
 \date{}
 
 
-\shorttitle{Vocabulary Production of Blind Toddlers}
-
-\authornote{
-
-Correspondence concerning this article should be addressed to Erin Campbell, 417 Chapel Drive, Durham, NC, 27708. E-mail: \href{mailto:erin.e.campbell@duke.edu}{\nolinkurl{erin.e.campbell@duke.edu}}
-
-}
-
-\affiliation{\vspace{0.5cm}\textsuperscript{1} Duke University\\\textsuperscript{2} Independent Researcher}
-
 \note{
 
 \textbf{Conflicts of Interest}: The authors have no conflicts of interest to report.
@@ -197,6 +162,8 @@ Correspondence concerning this article should be addressed to Erin Campbell, 417
 \textbf{Ethics Approval}: This study received approval from Duke University Institutional Review Board.
 
 }
+
+\affiliation{\vspace{0.5cm}\textsuperscript{1} Duke University\\\textsuperscript{2} Independent Researcher}
 
 \begin{document}
 \maketitle
@@ -386,8 +353,7 @@ We next measured whether the delay in vocabulary stayed constant across age. We 
 \hypertarget{do-blind-children-and-sighted-children-have-a-similar-vocabulary-composition}{%
 \subsection{Do blind children and sighted children have a similar vocabulary composition?}\label{do-blind-children-and-sighted-children-have-a-similar-vocabulary-composition}}
 
-We next investigated the composition of blind children's early words. Given the disparities between the vocabulary production of blind vs.~sighted children, we compared blind participants to a vocabulary-size-matched group of sighted children from Wordbank. We matched each blind child in our sample to a unique sighted participant from Wordbank. Sighted matches were selected to have the same number of words produced on the same form (WG vs.~WS) and to be as close as possible in age to the blind child; beyond this matching they were selected at random\footnote{To ensure that results are not due to the specific blind-sighted pairings, for each blind participant who has multiple possible sighted matches available in Wordbank (N=36/37), we randomly re-assigned matches and re-ran analyses. We find that re-assigning sighted matches does not change the results of our composition comparisons.
-}. Consequently, our samples for the vocabulary composition analysis are equivalent in vocabulary production but differ slightly in age (sighted sample on average 4.70 months younger, \emph{p} = .238 by Wilcoxon test); see Figure \ref{fig:vocab-match-demo}.
+We next investigated the composition of blind children's early words. Given the disparities between the vocabulary production of blind vs.~sighted children, we compared blind participants to a vocabulary-size-matched group of sighted children from Wordbank. We matched each blind child in our sample to a unique sighted participant from Wordbank. Sighted matches were selected to have the same number of words produced on the same form (WG vs.~WS) and to be as close as possible in age to the blind child; beyond this matching they were selected at random\footnote{To ensure that results are not due to the specific blind-sighted pairings, for each blind participant who has multiple possible sighted matches available in Wordbank (N=36/37), we randomly re-assigned matches and re-ran analyses. We find that re-assigning sighted matches does not change the results of our composition comparisons.}. Consequently, our samples for the vocabulary composition analysis are equivalent in vocabulary production but differ slightly in age (sighted sample on average 4.70 months younger, \emph{p} = .238 by Wilcoxon test); see Figure \ref{fig:vocab-match-demo}.
 
 \begin{figure}
 \centering
@@ -407,7 +373,7 @@ To compare words across each of these dimensions, we used profile analyses and W
 \caption{\label{fig:vocab-comparison}Comparisons of blind and sighted children's vocabulary across 6 dimensions. Whiskers represent 95\% CIs around the mean. \textbf{A}: Mean length (syllables) for sighted vs.~blind participants. \textbf{B}: Mean N of words produced by blind and sighted children from each part of speech on CDI. \textbf{C}: Mean N of words produced by blind and sighted children from each semantic category on CDI. \textbf{D}: Mean concreteness rating 1 (abstract) -- 5 (concrete) for sighted vs.~blind participants. \textbf{E}: Mean child-body-object interaction rating 1 (not interactive) -- 7 (highly interactive) for sighted vs.~blind participants. \textbf{F}: Mean N of words produced by blind and sighted children for each perceptual modality (modality with highest perceptual rating on Lancaster Sensorimotor Norms). Note the truncated y axis for D and E.}
 \end{figure}
 
-None of the comparisons reached this corrected threshold for significance. Blind and sighted children's early vocabularies did not significantly differ in word length (W =434, \emph{Z} = -1.58, \emph{p} = .115), part of speech (F = 1.66, \emph{p} = .144), semantic category (F = 1.89, \emph{p} = .033), concreteness (W =208, \emph{Z} = -1.96, \emph{p} = .050), interactiveness (W =639.50, \emph{Z} = -0.09, \emph{p} = .928), or perceptual modality (F = 2.26, \emph{p} = .058). See Figure \ref{fig:vocab-comparison} for vocabulary comparisons. Descriptively, both blind and sighted children's words tended to be short (Means: 1.46 and 1.52 syllables, respectively) and highly concrete (Means: 4.14 and 4.08 out of 5, respectively). The words that blind and sighted children produced tended to be rated as easy for children to interact with (Means: 5.50 and 5.50 out of 7, respectively). In both groups, nouns were the most common part of speech, and visual words comprised the overwhelming majority of children's early vocabulary.
+None of the comparisons reached this corrected threshold for significance. Blind and sighted children's early vocabularies did not significantly differ in word length (W =434, \emph{Z} = -1.58, \emph{p} = .115), part of speech (F = 1.66, \emph{p} = .144), semantic category (F = 1.89, \emph{p} = .033), concreteness (W =208, \emph{Z} = -1.96, \emph{p} = .050), interactiveness (W =637.50, \emph{Z} = -0.11, \emph{p} = .910), or perceptual modality (F = 2.26, \emph{p} = .058). See Figure \ref{fig:vocab-comparison} for vocabulary comparisons. Descriptively, both blind and sighted children's words tended to be short (Means: 1.46 and 1.52 syllables, respectively) and highly concrete (Means: 4.14 and 4.08 out of 5, respectively). The words that blind and sighted children produced tended to be rated as easy for children to interact with (Means: 5.50 and 5.50 out of 7, respectively). In both groups, nouns were the most common part of speech, and visual words comprised the overwhelming majority of children's early vocabulary.
 
 \begin{figure}
 \centering
@@ -547,7 +513,7 @@ Brooks, R., \& Meltzoff, A. N. (2008). Infant gaze following and pointing predic
 Brysbaert, M., Warriner, A. B., \& Kuperman, V. (2014). Concreteness ratings for 40 thousand generally known {English} word lemmas. \emph{Behavior Research Methods}, \emph{46}(3), 904--911. \url{https://doi.org/10.3758/s13428-013-0403-5}
 
 \leavevmode\vadjust pre{\hypertarget{ref-bulut2020}{}}%
-Bulut, O., \& Desjardins, C. D. (2020). \emph{Profile {Analysis} of {Multivariate Data}: {A Brief Introduction} to the {profileR Package}}. {PsyArXiv}. \url{https://doi.org/10.31234/osf.io/sgy8m}
+Bulut, O., \& Desjardins, C. D. (2020). Profile {Analysis} of {Multivariate Data}: {A Brief Introduction} to the {profileR Package}. {PsyArXiv}. \url{https://doi.org/10.31234/osf.io/sgy8m}
 
 \leavevmode\vadjust pre{\hypertarget{ref-campbell2022b}{}}%
 Campbell, E. E., \& Bergelson, E. (2022a). Characterizing {North Carolina}'s {Deaf} and {Hard} of {Hearing Infants} and {Toddlers}: {Predictors} of {Vocabulary}, {Diagnosis}, and {Intervention}. \emph{Journal of Speech, Language, and Hearing Research}, \emph{65}(5), 1894--1905. \url{https://doi.org/10.1044/2022_JSLHR-21-00245}
@@ -604,7 +570,7 @@ Gleitman, L. (1990). The {Structural Sources} of {Verb Meanings}. \emph{Language
 Greenaway, R., \& Dale, N. J. (2017). Congenital {Visual Impairment}. In \emph{Research in {Clinical Pragmatics}}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-harley1963}{}}%
-Harley, R. K. (1963). \emph{Verbalism {Among Blind Children}; {An Investigation} and {Analysis}. {American Foundation} for the {Blind Research Series}, {Number} 10}.
+Harley, R. K. (1963). Verbalism {Among Blind Children}; {An Investigation} and {Analysis}. {American Foundation} for the {Blind Research Series}, {Number} 10.
 
 \leavevmode\vadjust pre{\hypertarget{ref-heilmann2005}{}}%
 Heilmann, J., Weismer, S. E., Evans, J., \& Hollar, C. (2005). Utility of the {MacArthur}\textemdash{{Bates Communicative Development Inventory}} in {Identifying Language Abilities} of {Late-Talking} and {Typically Developing Toddlers}. \emph{American Journal of Speech-Language Pathology}, \emph{14}(1), 40--51. \url{https://doi.org/10.1044/1058-0360(2005/006)}
